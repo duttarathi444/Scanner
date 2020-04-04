@@ -1,0 +1,15 @@
+SELECT a.log_id,
+a.log_date,
+a.log_time,
+b.email_id,
+(concat(e.page_name,' ',f.activity_description,' ',a.key_id)) AS page_name,
+d.module_name FROM bye_user_log a,
+user_details b,
+module_list d,
+page_master e,
+user_activity_master f WHERE 
+a.user_id = b.user_details_id AND 
+b.user_details_id=a.user_id AND 
+a.module_id = d.module_id AND 
+a.page_id = e.page_id AND 
+a.activity_id = f.activity_id ORDER BY a.log_id DESC LIMIT 0,5
