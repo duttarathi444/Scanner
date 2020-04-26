@@ -1,0 +1,56 @@
+BEGIN
+
+DECLARE a, b , c INT;
+DECLARE done INT DEFAULT FALSE;
+DECLARE v_psd_id INT;
+DECLARE v_prd_id INT;
+DECLARE v_prd_qty INT;
+DECLARE v_user_id INT;
+
+DECLARE cur1 CURSOR FOR 
+SELECT t1.product_id, t1.product_quantity, t1.user_id 
+FROM product_stock_details t1 
+where t1.p_sale_id = p_sale_id;
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+SET v_user_id = (SELECT psm.user_id FROM product_sale_master psm WHERE psm.p_sale_id = p_sale_id);
+
+SET v_prd_id = (SELECT psm.product_id FROM product_sale_master psm WHERE psm.p_sale_id = p_sale_id AND psm.user_id = v_user_id);
+
+SET v_prd_qty = (SELECT psm.prd_quantity FROM product_sale_master psm WHERE psm.p_sale_id = p_sale_id AND psm.user_id = v_user_id);
+
+SET v_psd_id = (SELECT psd.product_stock_details_id FROM product_stock_details psd WHERE psd.p_sale_id = p_sale_id AND 
+                psd.product_id = v_prd_id AND 
+                psd.user_id = v_user_id);
+                
+UPDATE product_stock_details psd 
+SET psd.current_stock=psd.current_stock+v_prd_qty WHERE psd.product_stock_details_id>v_psd_id AND 
+psd.product_id = v_prd_id AND psd.user_id = v_user_id;
+
+OPEN cur1;
+read_loop: LOOP
+    FETCH cur1 INTO a, b, c;
+	
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+
+	update product_stock p1 
+    set p1.customer_stock = p1.customer_stock - b 
+    where p1.product_id = a 
+    and p1.user_id = c;
+    
+    
+END LOOP;
+
+CLOSE cur1; 
+
+DELETE FROM product_sale_master 
+WHERE product_sale_master.p_sale_id=p_sale_id;
+
+DELETE FROM product_stock_details 
+WHERE product_stock_details.p_sale_id=p_sale_id;
+
+
+END
