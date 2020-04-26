@@ -1,0 +1,19 @@
+BEGIN
+
+TRUNCATE TABLE coach_lending_details;
+TRUNCATE TABLE coach_lending_header;
+TRUNCATE TABLE coach_master;
+TRUNCATE TABLE customer_hirerarchy;
+TRUNCATE TABLE customer_reg;
+TRUNCATE TABLE dealer_master;
+TRUNCATE TABLE dealer_supervisor_map;
+TRUNCATE TABLE leading_details;
+TRUNCATE TABLE product_sale_master;
+TRUNCATE TABLE product_sale_master2;
+TRUNCATE TABLE product_stock;
+TRUNCATE TABLE product_stock_details;
+TRUNCATE TABLE product_stock_header;
+TRUNCATE TABLE send_to_warehouse;
+TRUNCATE TABLE swap_product;
+
+END
