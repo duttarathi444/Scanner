@@ -1,0 +1,9 @@
+SELECT * FROM customer_reg cr,
+product_sale_master psm,
+product_master pm,
+product_stock_details psd WHERE 
+cr.sl_no = psm.customer_id AND 
+cr.user_id = psm.user_id AND 
+psd.p_sale_id = psm.p_sale_id AND 
+psd.user_id = psm.user_id AND 
+psd.swap_id = 0 GROUP BY psd.product_id HAVING SUM(psd.product_quantity) < 0
