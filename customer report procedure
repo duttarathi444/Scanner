@@ -1,35 +1,19 @@
-SELECT * FROM customer_reg cr,
+SELECT f_name, (select count(*) from product_stock_details psd,
 product_sale_master psm,
-product_master pm,
-product_stock_details psd WHERE 
-cr.sl_no = psm.customer_id AND 
-cr.user_id = psm.user_id AND 
-psd.p_sale_id = psm.p_sale_id AND 
-psd.user_id = psm.user_id AND 
-psd.swap_id = 0 GROUP BY psd.product_id HAVING SUM(psd.product_quantity) < 0
+product_master pm
+where psd.user_id = psm.user_id
+and psd.p_sale_id = psm.p_sale_id
+and pm.product_id = psd.product_id
+and psd.swap_id < 1
+and lower(substr(pm.product_type,1,4)) = 'iqos'
+and psm.customer_id = cr.sl_no) as 'p',
+(select count(*)  from product_stock_details psd1,
+product_sale_master psm1,
+product_master pm1
+where psd1.p_sale_id = psm1.p_sale_id
+and pm1.product_id = psd1.product_id
+and psd1.swap_id < 1
+and lower(substr(pm1.product_type,1,5)) = 'heets'
+and psm1.customer_id = cr.sl_no) as 'p2'
 
-Final Query for iqos type
-
-SELECT COUNT(*) FROM customer_reg cr,
-product_stock_details psd,
-product_master pm,
-product_sale_master psm WHERE 
-cr.sl_no = psm.customer_id AND 
-cr.user_id = psm.user_id AND 
-psd.p_sale_id = psm.p_sale_id AND 
-psd.swap_id <= 0 AND 
-pm.product_id = psd.product_id AND 
-lower(substr(pm.product_type,1,4)) = 'iqos'
-
-Final Query for heets type
-
-SELECT COUNT(*) FROM customer_reg cr,
-product_stock_details psd,
-product_master pm,
-product_sale_master psm WHERE 
-cr.sl_no = psm.customer_id AND 
-cr.user_id = psm.user_id AND 
-psd.p_sale_id = psm.p_sale_id AND 
-psd.swap_id <= 0 AND 
-pm.product_id = psd.product_id AND 
-lower(substr(pm.product_type,1,5)) = 'heets'
+from customer_reg cr
