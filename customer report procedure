@@ -7,3 +7,29 @@ cr.user_id = psm.user_id AND
 psd.p_sale_id = psm.p_sale_id AND 
 psd.user_id = psm.user_id AND 
 psd.swap_id = 0 GROUP BY psd.product_id HAVING SUM(psd.product_quantity) < 0
+
+Final Query for iqos type
+
+SELECT COUNT(*) FROM customer_reg cr,
+product_stock_details psd,
+product_master pm,
+product_sale_master psm WHERE 
+cr.sl_no = psm.customer_id AND 
+cr.user_id = psm.user_id AND 
+psd.p_sale_id = psm.p_sale_id AND 
+psd.swap_id <= 0 AND 
+pm.product_id = psd.product_id AND 
+lower(substr(pm.product_type,1,4)) = 'iqos'
+
+Final Query for heets type
+
+SELECT COUNT(*) FROM customer_reg cr,
+product_stock_details psd,
+product_master pm,
+product_sale_master psm WHERE 
+cr.sl_no = psm.customer_id AND 
+cr.user_id = psm.user_id AND 
+psd.p_sale_id = psm.p_sale_id AND 
+psd.swap_id <= 0 AND 
+pm.product_id = psd.product_id AND 
+lower(substr(pm.product_type,1,5)) = 'heets'
