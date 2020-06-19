@@ -1,0 +1,53 @@
+For Jquery:
+
+
+
+$('select').on('change', function() {
+  var selectedValues = [];
+  $('select').each(function() {
+    var thisValue = this.value;
+    if(thisValue !== '')
+      selectedValues.push(thisValue);
+  }).each(function() {
+    $(this).find('option:not(:selected)').each(function() {
+      if( $.inArray( this.value, selectedValues ) === -1 ) {
+        $(this).removeAttr('hidden');
+      } else {
+        if(this.value !== '')
+          $(this).attr('hidden', 'hidden');
+      }
+    });
+  });
+});
+
+For Javascript:
+
+var selects = document.querySelectorAll('select'),
+    notify = document.getElementById('notification');
+function getOthers(current){
+    var values = [];
+    for(var i=0;i<selects.length;i++){
+    console.log(selects[i].value);
+        if(selects[i].value!='null' && selects[i]!=current)
+            values.push(selects[i].value);
+    }
+    return values;
+}
+    function checkUnique(){
+        if(this.value && getOthers(this).indexOf(this.value)>-1){
+            notify.innerText = 'You already selected that';
+            this.value = null;
+        }
+    }
+for(var i=0;i<selects.length;i++)
+    selects[i].onchange = checkUnique;
+document.getElementById('submit').onclick = function(){
+    var values = getOthers();
+    console.log(values);
+    if(values.length < 6){
+        notify.innerText = 'select all six';
+        return false;
+    }
+    notify.innerText = '';
+    return true;
+}
