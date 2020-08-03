@@ -1,0 +1,79 @@
+How can I enter data using non English (Bangla) language into this database table?
+
+As pointed out by @Tim you need to change the collation of your table/database/column to UTF-8. First check the collation of your database/table/column.
+
+CHECK COLLATION:
+
+How to check the collation of DATABASE:
+
+SELECT
+    default_character_set_name
+FROM
+    information_schema.SCHEMATA
+WHERE
+    schema_name = "YOUR_DATABASE_NAME";
+    
+  
+How to check the collation of TABLE:
+
+SELECT
+    CCSA.character_set_name
+FROM
+    information_schema.`TABLES` T,
+    information_schema.`COLLATION_CHARACTER_SET_APPLICABILITY` CCSA
+WHERE
+    CCSA.collation_name = T.table_collation
+AND T.table_schema = "YOUR_DATABASE_NAME"
+AND T.table_name = "YOUR_TABLE_NAME";
+
+
+How to check the collation of a COLUMN:
+
+SELECT
+    character_set_name
+FROM
+    information_schema.`COLUMNS`
+WHERE
+    table_schema = "YOUR_DATABASE_NAME"
+AND table_name = "YOUR_TABLE_NAME"
+AND column_name = "YOUR_COLUMN_NAME";
+Change COLLATION:
+
+How to change database collation:
+
+ALTER DATABASE YOUR_DATABASE_NAME CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+How to change table collation:
+
+ALTER TABLE YOUR_TABLE_NAME CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+How to change column collation:
+
+ALTER TABLE YOUR_TABLE_NAME MODIFY YOUR_COLUMN_NAME VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+Example:
+
+DROP TABLE IF EXISTS `sample_table`;
+CREATE TABLE `sample_table` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `language` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO sample_table(name,language) VALUES('Ed Sheeran','English');
+INSERT INTO sample_table(name,language) VALUES('আয়েশা খাতুন সুজানা','আমার সোনার বাংলা');
+Look, the CHARSET used in the table definition is utf8. So, you can store unicode characters in the table.
+
+Check whether the data inserted correctly or not.
+
+SELECT * FROM sample_table;
+
+Result:
+
+| id |               name |         language |
+|----|--------------------|------------------|
+|  1 |         Ed Sheeran |          English |
+|  2 |    আয়েশা খাতুন সুজানা |  আমার সোনার বাংলা |
