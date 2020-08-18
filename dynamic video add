@@ -1,0 +1,146 @@
+<html>
+<title>Test</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<body>
+    <!-- <form id="formdate" method="POST">
+        <input type="email" name="email" value="gdbsd@gmail.com">
+        <input type="password" name="pass" value="dsv">
+        <input type="button" value="Submit">
+    </form> -->
+
+    <!-- <h1 id="hello">Hello</h1>
+    <button data-ping="red" target="blank">Red</button>
+    <button data-ping="green">Green</button>
+    <button data-ping="blue">Blue</button> -->
+    <!-- <input type="button" value="submit" id="shoeframe">
+    <div class="embed-responsive embed-responsive-21by9" id="iframe_content">
+    </div> -->
+    <table>
+        <tbody id="tablepush">
+        </tbody>
+    </table>
+    <input type="button" id="add" value="Add">
+</body>
+
+<!-- <script>
+    document.getElementById('shoeframe').addEventListener('click', function () {
+        var createiframe = document.createElement('iframe');
+        createiframe.setAttribute('class', 'embed-responsive-item');
+        createiframe.setAttribute('width', '100%');
+        createiframe.setAttribute('height', '100%');
+        createiframe.setAttribute('src', 'https://mconf.github.io/api-mate/#server=https://raysha.in/bigbluebutton/&sharedSecret=v5h6qLnW3lbjzrc1wVv77YeEo98yeLj0jKKqGnpenT8');
+        document.getElementById('iframe_content').appendChild(createiframe);
+        this.type = 'hidden';
+    })
+</script> -->
+
+<script>
+    // document.querySelector("input[type='button']").addEventListener('click', function (e) {
+    //     e.preventDefault();
+    //     var alldata = new FormData(formdate);
+    //     console.log(alldata.get('email'));
+    // })
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     document.querySelectorAll('button').forEach(button => {
+    //         button.onclick = function () {
+    //             var pos = 0;
+    //             var time = setInterval(frame, 35);
+    //             // var timeup = setInterval(frame1,35);
+    //             function frame() {
+    //                 if (pos >= 90) {
+    //                     if (pos >= 180) {
+    //                         // if (pos == 270) {
+    //                         //     clearInterval(time);
+    //                         // } else {
+    //                         //     console.log('hi');
+    //                         //     var uppos = 40;
+    //                         //     document.querySelector('#hello').style.paddingRight = `${uppos}px`;
+    //                         //     uppos -= 10;
+    //                         // }
+    //                     } else {
+    //                         document.querySelector('#hello').style.paddingTop = `${pos}px`;
+    //                         pos += 10;
+    //                     }
+    //                 } else {
+    //                     pos += 10;
+    //                     document.querySelector('#hello').style.paddingLeft = `${pos}px`;
+    //                 }
+    //             }
+    //         }
+    //     })
+    // })
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('add').addEventListener('click', function () {
+            var tr = document.createElement('tr');
+            var td = document.createElement('td');
+            td.setAttribute('style', 'text-align: left');
+            var check = document.createElement('input');
+            check.setAttribute('type', 'checkbox');
+            check.setAttribute('onclick', 'remove(this)');
+            var input1 = document.createElement('input');
+            input1.setAttribute('type', 'text');
+            input1.setAttribute('class', 'num');
+            input1.setAttribute('onchange', 'num(this)');
+
+            var innertable = document.createElement('table');
+            var innertbody = document.createElement('tbody');
+            innertbody.setAttribute('id', 'videogp');
+
+            var div = document.createElement('div');
+            div.setAttribute('style', 'padding-left: 15px;');
+            var inneradd = document.createElement('input');
+            inneradd.setAttribute('type', 'button');
+            inneradd.setAttribute('value', 'Add Video');
+            inneradd.setAttribute('onclick', 'addvideo(this)');
+            div.appendChild(inneradd);
+
+            innertable.appendChild(innertbody);
+            innertable.appendChild(div);
+            td.appendChild(check);
+            td.appendChild(input1);
+            td.appendChild(innertable);
+
+            tr.appendChild(td);
+            document.querySelector('#tablepush').append(tr);
+        });
+    })
+
+    function remove(id) {
+        if (confirm('Do you want to delete') === true)
+            id.parentNode.parentNode.remove();
+        id.checked = false;
+    }
+
+    function addvideo(id) {
+        var innertr = document.createElement('tr');
+        var innertd = document.createElement('td');
+
+        var innercheck = document.createElement('input');
+        innercheck.setAttribute('type', 'checkbox');
+        innercheck.setAttribute('onclick', 'innerremove(this)');
+
+        innertd.setAttribute('style', 'text-align: left;padding-left: 15px;');
+        var innerdes = document.createElement('input');
+        innerdes.setAttribute('type', 'text');
+        var innerfile = document.createElement('input');
+        innerfile.setAttribute('type', 'file');
+        innertd.appendChild(innercheck);
+        innertd.appendChild(innerdes);
+        innertd.appendChild(innerfile);
+        innertr.appendChild(innertd);
+        id.parentNode.parentNode.childNodes[0].appendChild(innertr);
+    }
+
+    function innerremove(id) {
+        if (confirm('Do you want to delete') === true)
+            id.parentNode.parentNode.remove();
+        id.checked = false;
+    }
+
+</script>
+
+</html>
