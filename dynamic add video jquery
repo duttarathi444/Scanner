@@ -14,6 +14,7 @@
         </tbody>
     </table>
     <input type="button" value="Add" id="add">
+    <input type="button" value="Submit" id="sub">
 </body>
 <script>
     $(document).ready(function () {
@@ -73,6 +74,41 @@
         if (confirm('Do you want to delete') === true)
             $(id).closest('tr')[0].remove();
         id.checked = false;
+    }
+
+    var titleDes = [];
+    var videoDes = [];
+    var videoFiles = [];
+
+    document.querySelector('#sub').onclick = function () {
+        var childs = document.querySelector('#content').childNodes;
+        for (let child = 1; child < childs.length; child++) {
+
+            let tempVideoDes = [];
+            let tempVideoFile = [];
+
+            const element = childs[child];
+            const videosDes = element.firstChild.nextSibling.childNodes;
+            var videos = videosDes[3].childNodes[1].childNodes;
+            var description = videosDes[1].childNodes[3].value;
+            for (let video = 0; video < videos.length; video++) {
+                const element = videos[video];
+                const allvalue = element.childNodes[1].childNodes[1].childNodes;
+                // allvalue[3].style.borderColor = 'red';
+                var desVideo = allvalue[3].value;
+                var VideoFile = allvalue[5].value;
+
+                tempVideoDes.push(desVideo);
+                tempVideoFile.push(VideoFile);
+            }
+
+            titleDes.push(description);
+            videoDes.push(tempVideoDes);
+            videoFiles.push(tempVideoFile);
+        }
+        console.log(titleDes);
+        console.log(videoDes);
+        console.log(videoFiles);
     }
 
 </script>
