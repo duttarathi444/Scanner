@@ -1,0 +1,17 @@
+async function retriveSize(fileUrl){
+	        let fetchFile = await fetch(fileUrl);
+	        let data = await fetchFile.blob();
+	        var reader = new File([data],"test.mp4");
+	        var video = document.createElement('video');
+            video.preload = 'metadata';
+            var dura = 0;
+            video.onloadedmetadata = async function foo() {
+                window.URL.revokeObjectURL(video.src);
+                var duration = video.duration;
+                dura = Math.ceil((duration/60));
+                console.log(dura);
+                myfile.push(dura);
+                return  dura;
+            }
+            video.src = URL.createObjectURL(reader);
+	    }
