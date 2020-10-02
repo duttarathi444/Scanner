@@ -1,0 +1,10 @@
+BEGIN
+IF EXISTS(SELECT * FROM kams_video_classroom kvc WHERE 
+kvc.id = p_classroom_id AND 
+CURRENT_DATE() BETWEEN kvc.start_date AND kvc.end_time AND 
+FIND_IN_SET(DAYOFWEEK(CURRENT_DATE()),kvc.days)>0)THEN
+	SELECT 1 AS id;
+ELSE
+	SELECT 0 AS id;
+END IF;
+END
