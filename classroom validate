@@ -1,9 +1,19 @@
 BEGIN
+DECLARE v_days VARCHAR(100);
+SET v_days = (SELECT kvc3.days FROM kams_video_classroom kvc3 WHERE 
+            kvc3.id = p_classroom_id);
 IF EXISTS(SELECT * FROM kams_video_classroom kvc WHERE 
 kvc.id = p_classroom_id AND 
-CURRENT_DATE() BETWEEN kvc.start_date AND kvc.end_time AND 
-FIND_IN_SET(DAYOFWEEK(CURRENT_DATE()),kvc.days)>0)THEN
-	SELECT 1 AS id;
+CURRENT_DATE() BETWEEN kvc.start_date AND kvc.end_time)THEN
+	IF(v_days = 0)THEN
+    	SELECT 1 AS id;
+    ELSE
+    	IF(SELECT FIND_IN_SET(DAYOFWEEK(CURRENT_DATE()),v_days)>0)THEN
+        	SELECT 1 AS id;
+        ELSE
+        	SELECT 0 AS id;
+        END IF;
+    END IF;
 ELSE
 	SELECT 0 AS id;
 END IF;
