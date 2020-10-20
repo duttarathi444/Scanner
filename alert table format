@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="button" value="display" onclick="myTable()">
+    <table>
+        <thead id="deepak">
+            <tr>
+                <th>Cell1</th>
+                <th>Cell2</th>
+                <th>Cell3</th>
+            </tr>
+        </thead>
+        <tbody id="deepak1">
+            <tr>
+                <td>row 0</td>
+                <td>row 1</td>
+                <td>row 2</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+<script>
+    function myTable() {
+        var el = document.getElementById('deepak');
+        var el1 = document.getElementById('deepak1');
+        var i = 0, r, t = "";
+        while (r = el.rows[i++]) {
+            var c, n = 0;
+            // t += "\n";
+            while (c = r.cells[n++]) {
+                t += c.firstChild.data + "  ";
+            }
+
+        }
+        var j = 0, s;
+        while (s = el1.rows[j++]) {
+            var d, m = 0;
+            t += "\n";
+            while (d = s.cells[m++]) {
+                t += d.firstChild.data + "  ";
+            }
+        }
+
+        alert(t);
+    }
+</script>
+
+</html>
