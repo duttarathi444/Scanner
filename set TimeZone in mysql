@@ -1,0 +1,2 @@
+SET SESSION time_zone = '+5:30';
+SELECT CURRENT_TIME();
