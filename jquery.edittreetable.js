@@ -20,9 +20,10 @@
 		var settings = {
 			container:window,
 			data:[],
-			extfield:[],//{title:"column name",key:"",type:"input"}
+			extfield:[],//{title:"列名",key:"",type:"input"} input表示是输入框
 			nodeaddEnable:true,
 			maxlevel:4,
+            /*addCallback需返回新增的id*/
 			nodeaddCallback:function(data,callback){},
 			noderemoveCallback:function(data,callback){},
 			nodeupdateCallback:function(data,callback){},
@@ -33,12 +34,12 @@
                 return confirm(msg);
             },
             text:{
-                NodeDeleteText:"Are You Sure To Delete This Node?"
+                NodeDeleteText:"确认删除?"
             }
 		};
 		var TREENODECACHE = "treenode";
 		var language ={};
-		language.addchild = "Add A Child Node";
+		language.addchild = "添加子分类";
 		if(options) {           
             $.extend(settings, options);
         }
@@ -46,7 +47,7 @@
         $container = (settings.container === undefined ||
                       settings.container === window) ? $window : $(settings.container);
         /*render data*/
-        var dom_addFirstLevel = $("<div class='tt-operation m-b-sm'></div>").append($("<button class='btn btn-primary btn-sm j-addClass'><i class='fa fa-level-down'></i>&nbsp;Add A Root Node</button>"));
+        var dom_addFirstLevel = $("<div class='tt-operation m-b-sm'></div>").append($("<button class='btn btn-primary btn-sm j-addClass'><i class='fa fa-level-down'></i>&nbsp;添加分类</button>"));
         var dom_table = $("<div class='tt-body'></div>");
         var dom_header = $("<div class='tt-header'></div>");
         /*renderHeader*/
@@ -93,7 +94,7 @@
             var isRemoveAble = false;
             if(parentDom.attr("data-loaded")=="true"){
                 if(parentDom.parent().find(".class-level").length>0){
-                    settings.customalert("Can not be deleted!");
+                    settings.customalert("存在下级节点，不允许删除！");
                     return;
                 }
                 else{
@@ -111,7 +112,7 @@
                         }
                     }
                     if(existChild){
-                        settings.customalert("Can not be deleted!");
+                        settings.customalert("可能存在下级节点,请确认后重试！");
                         return;
                     }
                     else{
@@ -199,7 +200,7 @@
     			var column = settings.extfield[j];    			
     			$("<span></span>").css("min-width","166px").text(column.title).appendTo(dom_row);
     		}
-    		dom_row.append($("<span class='textalign-center'>Operation</span>")); 
+    		dom_row.append($("<span class='textalign-center'>操作</span>")); 
     		_dom_header.append(dom_row);
         }
         //动态生成扩展字段
