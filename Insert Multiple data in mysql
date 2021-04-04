@@ -1,0 +1,118 @@
+BEGIN
+DECLARE myStr varchar(10000);
+DECLARE myStr2 varchar(10000);
+DECLARE myStr3 varchar(10000);
+DECLARE STR VARCHAR(10000);
+DECLARE STR2 VARCHAR(10000);
+DECLARE STR3 VARCHAR(10000);
+DECLARE v_strLen INT;
+DECLARE header_id INT;
+DECLARE c_id INT;
+DECLARE head_id INT;
+SET myStr = CONCAT(products , ',');
+SET myStr2 = CONCAT(quantities , ',');
+SET myStr3 = CONCAT(return_dates , ',');
+
+IF EXISTS(select * from coach_master where coach_email = c_email)THEN
+
+SET c_id = (select coach_master_id from coach_master where coach_email = c_email);
+
+ELSE 
+INSERT INTO coach_master(
+	coach_email,
+    coach_name,
+    phone_no,
+    user_id
+)VALUES(
+	upper(c_email),
+    upper(c_name),
+    phone_no,
+    user_id
+);
+
+SET c_id = (SELECT LAST_INSERT_ID());
+
+END IF;
+
+
+
+
+INSERT INTO coach_lending_header(
+	user_id,
+    coach_id,
+    lending_date
+)VALUES(
+	user_id,
+    c_id,
+    lenddate
+);
+
+SET head_id = (SELECT LAST_INSERT_ID());
+
+WHILE (LOCATE(',', myStr) > 0)
+ DO
+SET v_strLen = (SELECT LENGTH(TRIM(myStr) > 0));
+
+IF(v_strLen >0 )THEN
+
+SET STR = SUBSTRING(myStr, 1, LOCATE(',', myStr) - 1);
+SET myStr = SUBSTRING(myStr, LOCATE(',', myStr) + 1);
+
+SET STR2 = SUBSTRING(myStr2, 1, LOCATE(',', myStr2) - 1);
+SET myStr2 = SUBSTRING(myStr2, LOCATE(',', myStr2) + 1);
+
+SET STR3 = SUBSTRING(myStr3, 1, LOCATE(',', myStr3) - 1);
+SET myStr3 = SUBSTRING(myStr3, LOCATE(',', myStr3) + 1);
+    
+   IF EXISTS (SELECT * FROM coach_lending_details cld,coach_lending_header clh,coach_master cm 
+              WHERE cld.product_id=STR AND 
+              cld.user_id=user_id AND  cld.header_id=clh.coach_lending_head_id AND 
+              cm.coach_email=c_id AND clh.coach_id=cm.coach_master_id)THEN
+   
+   SET header_id=(SELECT cld.header_id 
+                  FROM coach_lending_details cld,
+                  coach_lending_header 
+                  WHERE cld.product_id=STR 
+                  AND cld.user_id=user_id 
+                  AND cld.header_id=coach_lending_header.coach_lending_head_id);
+   
+   /*UPDATE product_stock ps 
+   SET ps.customer_stock=ps.customer_stock-STR2 
+   WHERE ps.product_id=STR AND 
+   ps.user_id=user_id;*/
+   
+    UPDATE coach_lending_details cld 
+    SET cld.quantity=cld.quantity+STR2 
+    WHERE cld.product_id=STR AND 
+    cld.user_id=user_id 
+    AND cld.header_id=header_id;
+    
+   ELSE
+   /*UPDATE product_stock ps 
+   SET ps.customer_stock=ps.customer_stock-STR2 
+   WHERE ps.product_id=STR 
+   AND ps.user_id=user_id;*/
+   
+   INSERT INTO coach_lending_details(
+    	header_id,
+        user_id,
+        product_id,
+        quantity,
+        expected_return_date,
+        received_date,
+        status_no
+    )VALUES(
+    	head_id,
+        user_id,
+        STR,
+        STR2,
+        STR3,
+        lenddate,
+        0
+    );
+   
+   END IF;
+   END IF;
+ END WHILE;
+SELECT c_id AS id;
+END
