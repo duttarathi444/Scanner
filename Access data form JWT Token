@@ -1,0 +1,7 @@
+
+IN JavaScript
+
+var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTIzIiwidXNlcl9idXNpbmVzc19lbWFpbCI6ImxpcGl4NzI4OTRAdGhyZWVwcC5jb20iLCJvcmdfaWQiOm51bGwsIm9yZ19tYXN0ZXJfaWQiOiI5MyIsImlhdCI6MTYyMTQ4OTE0MSwiZXhwIjoxNjIxNTMyMzQxfQ.gd4zYxFq5deFrDz4kI82YYHKnAJrVTaHGfswBMtjeEs";
+var str = token.split('.');
+var enc = window.btoa(str); // For Encode the data
+var dec = window.atob(str[1]); // For Decode the token and access data
