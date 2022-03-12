@@ -1,0 +1,21 @@
+{
+  "name": "s3-fileupload",
+  "version": "1.0.0",
+  "description": "fileupload",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Durga",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1028.0",
+    "body-parser": "^1.19.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "multer": "^1.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
